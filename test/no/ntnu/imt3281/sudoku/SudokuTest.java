@@ -8,7 +8,7 @@ public class SudokuTest {
 
 	@Test
 	public void testEmptyConstructor() {
-		Sudoku sudoku = new Sudoku();
-		assertTrue(sudoku instanceof Sudoku);
+		Main sudoku = new Main();
+		assertTrue(sudoku instanceof Main);
 	}
 }
