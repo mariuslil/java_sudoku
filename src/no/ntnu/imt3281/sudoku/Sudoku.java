@@ -1,6 +1,6 @@
 package no.ntnu.imt3281.sudoku;
 
-import java.io.IOException;
+//import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,23 +8,23 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
-	
-	@Override
-	public void start(Stage stage) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("Sudoku.fxml"));
-		Scene scene = new Scene(root);
-		stage.setScene(scene);
-		stage.setTitle("Sudoku");
-		stage.show();
-	}
+public class Sudoku extends Application {
 	
 	public static void main(String args[]) {
 		System.out.println(" text " );
 		launch(args);
 		System.out.println(" text " );
 	}
-	/*
+	
+	@Override
+	public void start(Stage stage) throws Exception {
+		Parent root = FXMLLoader.load(getClass().getResource("sudoku.fxml"));
+		Scene scene = new Scene(root);
+		stage.setTitle("Sudoku");
+		stage.setScene(scene);
+		stage.show();
+	}
+	
 	private int[][] originalBoard = new int[9][9];
 	private int[][] board = new int[9][9];
 	private static int selectedRow;
@@ -62,7 +62,6 @@ public class Main extends Application {
 		
 	}
 	
-	
 	public static void newGame() {
 		
 	}
@@ -75,13 +74,13 @@ public class Main extends Application {
 		
 	}
 	
-	public static void flipDRed() {
+	public static void flipDLR() {
 		
 	}
 	
-	public static void flipDBlue() {
+	public static void flipDRL() {
 		
 	}
-	*/
+	
 
 }
