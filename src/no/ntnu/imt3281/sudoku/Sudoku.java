@@ -1,6 +1,6 @@
 package no.ntnu.imt3281.sudoku;
 
-//import java.io.IOException;
+import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,14 +11,14 @@ import javafx.stage.Stage;
 public class Sudoku extends Application {
 	
 	public static void main(String args[]) {
-		System.out.println(" text " );
+		System.out.println(" text1 " );
 		launch(args);
-		System.out.println(" text " );
+		System.out.println(" text3 " );
 	}
 	
 	@Override
-	public void start(Stage stage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("sudoku.fxml"));
+	public void start(Stage stage) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("Sudoku.fxml"));
 		Scene scene = new Scene(root);
 		stage.setTitle("Sudoku");
 		stage.setScene(scene);
