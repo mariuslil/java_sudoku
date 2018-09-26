@@ -6,14 +6,18 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
 
-
 <Pane maxHeight="500.0" maxWidth="450.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="no.ntnu.imt3281.sudoku.sudokuController">
    <children>
       <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="450.0">
          <bottom>
             <ToolBar fx:id="ToolBar" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <items>
-                <Button fx:id="NewGame" mnemonicParsing="false" onAction="#newGame" text="New Game" />
+                <Button fx:id="NewGame" mnemonicParsing="false" onAction="#newGame" text="New Game" textAlignment="CENTER" />
+                  <Button fx:id="flipp_h" mnemonicParsing="false" onAction="#flippH" text="Flipp H" textAlignment="CENTER" />
+                  <Button fx:id="flipp_v" mnemonicParsing="false" onAction="#flippV" text="Flipp V" textAlignment="CENTER" />
+                  <Button fx:id="flipp_dr" mnemonicParsing="false" onAction="#flippDR" text="Flipp DR" textAlignment="CENTER" />
+                  <Button fx:id="flipp_db" mnemonicParsing="false" onAction="#flippDB" text="Flipp DB" textAlignment="CENTER" />
+                  <Button fx:id="clear" mnemonicParsing="false" onAction="#clear" text="Clear" textAlignment="CENTER" />
               </items>
             </ToolBar>
          </bottom>
