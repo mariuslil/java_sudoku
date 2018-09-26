@@ -86,12 +86,16 @@ public class Sudoku extends Application {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				if (newBoard[i][j] != -1 && newBoard[i][j] != 0) {
-					textFields[i][j].setText(newBoard[i][j] + "");
-					textFields[i][j].setEditable(false);
-					textFields[i][j].setStyle(styleGray);
+					lock(newBoard, i, j);
 				}
 			}
 		}
+	}
+
+	public void lock(int[][] board, int row, int col) {
+		textFields[row][col].setText(board[row][col] + "");
+		textFields[row][col].setEditable(false);
+		textFields[row][col].setStyle(styleGray);
 	}
 
 	public void newGame() {
@@ -157,30 +161,30 @@ public class Sudoku extends Application {
 		update(mirror);
 	}
 
-	public void flippRL() {
+	public void flippDB() {
 		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
 		for (int i = 0; i < NUMB_ROWS; i++) {
 			for (int j = 0; j < NUMB_COLS; j++) {
-				if (!textFields[i][j].getText().isEmpty()) {
+				if (!textFields[j][i].getText().isEmpty()) {
 					mirror[i][j] = Integer.parseInt(textFields[j][i].getText());
 				}
 			}
 		}
 		update(mirror);
 	}
-	
-	public void flippLR() {
+
+	public void flippDR() {
 		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
 		for (int i = 0; i < NUMB_ROWS; i++) {
-			for (int j = 8; j >= 0; j--) {
-				if (!textFields[i][j].getText().isEmpty()) {
-					mirror[i][j] = Integer.parseInt(textFields[j][j].getText());
+			for (int j = 0; j < NUMB_COLS; j++) {
+				if (!textFields[8 - j][8 - i].getText().isEmpty()) {
+					mirror[i][j] = Integer.parseInt(textFields[8 - j][8 - i].getText());
 				}
 			}
 		}
 		update(mirror);
 	}
-	
+
 	public int[][] readJSON() {
 		int[][] board = new int[9][9];
 		try (BufferedReader br = new BufferedReader(new FileReader("board1.json"))) {
@@ -218,6 +222,7 @@ public class Sudoku extends Application {
 		for (int i = 0; i < NUMB_ROWS; i++) {
 			for (int j = 0; j < NUMB_COLS; j++) {
 				textFields[i][j].clear();
+				textFields[i][j].setEditable(true);
 				textFields[i][j].setStyle(styleWhite);
 			}
 		}

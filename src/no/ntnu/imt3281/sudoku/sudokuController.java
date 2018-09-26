@@ -54,12 +54,12 @@ public class sudokuController {
 
 	@FXML
 	void flippDB(ActionEvent event) {
-		sudoku.flippLR();
+		sudoku.flippDB();
 	}
 
 	@FXML
 	void flippDR(ActionEvent event) {
-		sudoku.flippRL();
+		sudoku.flippDR();
 	}
 
 	@FXML
