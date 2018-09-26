@@ -157,6 +157,30 @@ public class Sudoku extends Application {
 		update(mirror);
 	}
 
+	public void flippRL() {
+		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
+		for (int i = 0; i < NUMB_ROWS; i++) {
+			for (int j = 0; j < NUMB_COLS; j++) {
+				if (!textFields[i][j].getText().isEmpty()) {
+					mirror[i][j] = Integer.parseInt(textFields[j][i].getText());
+				}
+			}
+		}
+		update(mirror);
+	}
+	
+	public void flippLR() {
+		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
+		for (int i = 0; i < NUMB_ROWS; i++) {
+			for (int j = 8; j >= 0; j--) {
+				if (!textFields[i][j].getText().isEmpty()) {
+					mirror[i][j] = Integer.parseInt(textFields[j][j].getText());
+				}
+			}
+		}
+		update(mirror);
+	}
+	
 	public int[][] readJSON() {
 		int[][] board = new int[9][9];
 		try (BufferedReader br = new BufferedReader(new FileReader("board1.json"))) {
