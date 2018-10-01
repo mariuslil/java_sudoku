@@ -139,10 +139,11 @@ public class Sudoku extends Application {
 
 	public void flippH() {
 		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
+		int[][] old = readJSON();
 		for (int i = 0; i < NUMB_ROWS; i++) {
 			for (int j = 0; j < NUMB_COLS; j++) {
-				if (!textFields[8 - i][j].getText().isEmpty()) {
-					mirror[i][j] = Integer.parseInt(textFields[8 - i][j].getText());
+				if (old[8-i][j] != 0) {
+					mirror[i][j] = old[8 - i][j];
 				}
 			}
 		}
