@@ -73,6 +73,9 @@ public class Sudoku extends Application {
 						if (newValue.matches("")) {
 							textFields[row][col].setStyle(styleWhite);
 						}
+						if (checkFinished()) {
+							finished();
+						}
 					}
 				});
 			}
@@ -137,13 +140,27 @@ public class Sudoku extends Application {
 		return true;
 	}
 
-	public void flippH() {
-		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
-		int[][] old = readJSON();
+	public boolean checkFinished() {
 		for (int i = 0; i < NUMB_ROWS; i++) {
 			for (int j = 0; j < NUMB_COLS; j++) {
-				if (old[8-i][j] != 0) {
-					mirror[i][j] = old[8 - i][j];
+				if (textFields[i][j].getStyle().equals(styleRed) || textFields[i][j].getText().isEmpty()) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public void finished() {
+		System.out.println("Hurra! du klarte det!");
+	}
+
+	public void flippH() {
+		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
+		for (int i = 0; i < NUMB_ROWS; i++) {
+			for (int j = 0; j < NUMB_COLS; j++) {
+				if (!textFields[8 - i][j].getText().isEmpty() && textFields[8 - i][j].getStyle().equals(styleGray)) {
+					mirror[i][j] = Integer.parseInt(textFields[8 - i][j].getText());
 				}
 			}
 		}
@@ -154,7 +171,7 @@ public class Sudoku extends Application {
 		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
 		for (int i = 0; i < NUMB_ROWS; i++) {
 			for (int j = 0; j < NUMB_COLS; j++) {
-				if (!textFields[i][8 - j].getText().isEmpty()) {
+				if (!textFields[i][8 - j].getText().isEmpty() && textFields[i][8 - j].getStyle().equals(styleGray)) {
 					mirror[i][j] = Integer.parseInt(textFields[i][8 - j].getText());
 				}
 			}
@@ -166,7 +183,7 @@ public class Sudoku extends Application {
 		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
 		for (int i = 0; i < NUMB_ROWS; i++) {
 			for (int j = 0; j < NUMB_COLS; j++) {
-				if (!textFields[j][i].getText().isEmpty()) {
+				if (!textFields[j][i].getText().isEmpty() && textFields[j][i].getStyle().equals(styleGray)) {
 					mirror[i][j] = Integer.parseInt(textFields[j][i].getText());
 				}
 			}
@@ -178,7 +195,8 @@ public class Sudoku extends Application {
 		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
 		for (int i = 0; i < NUMB_ROWS; i++) {
 			for (int j = 0; j < NUMB_COLS; j++) {
-				if (!textFields[8 - j][8 - i].getText().isEmpty()) {
+				if (!textFields[8 - j][8 - i].getText().isEmpty()
+						&& textFields[8 - j][8 - i].getStyle().equals(styleGray)) {
 					mirror[i][j] = Integer.parseInt(textFields[8 - j][8 - i].getText());
 				}
 			}
