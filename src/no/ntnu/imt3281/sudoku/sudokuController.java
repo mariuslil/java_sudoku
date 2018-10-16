@@ -15,7 +15,10 @@ public class sudokuController {
 	private BorderPane borderPane;
 
 	@FXML
-	private Button NewGame;
+	private Button NewGameEasy;
+	
+	@FXML
+	private Button NewGameMedium;
 
 	@FXML
 	private ToolBar ToolBar;
@@ -43,8 +46,13 @@ public class sudokuController {
 	}
 
 	@FXML
-	void newGame(ActionEvent event) {
-		sudoku.newGame();
+	void newGameEasy(ActionEvent event) {
+		sudoku.newGameEasy();					
+	}
+	
+	@FXML
+	void newGameMedium(ActionEvent event) {
+		sudoku.newGameMedium();					
 	}
 
 	@FXML

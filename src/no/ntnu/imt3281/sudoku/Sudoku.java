@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Iterator;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -101,12 +103,29 @@ public class Sudoku extends Application {
 		textFields[row][col].setStyle(styleGray);
 	}
 
-	public void newGame() {
-		int[][] board = readJSON();
+	public void newGameEasy() {
+		int[][] board = readJSON("board1.json");
+		update(board);
+	}
+	
+	public void newGameMedium() {
+		int[][] board = readJSON("board2.json");
 		update(board);
 	}
 
 	public boolean checkValid(int row, int column, TextField[][] board, String number) {
+		/*Integer[] arr = new Integer[9];
+		for (int r = 0; r < 9; r++) {
+			if (r != column) {
+				arr[r] = Integer.parseInt(board[row][r].getText());		
+			}
+		}
+		Iterator<Integer> iterator = Arrays.stream(arr).iterator();
+		if (iterator.hasNext()) {
+			if (iterator.equals(Integer.parseInt(number))) {
+				return false;
+			}
+		}*/
 		for (int r = 0; r < 9; r++) {
 			if (r != column) {
 				if (board[row][r].getText().equals(number)) {
@@ -123,7 +142,7 @@ public class Sudoku extends Application {
 			}
 		}
 
-		int rowStart = (row / 3) * 3;
+		int rowStart = (row / 3) * 3;						//Finner starten av ruten
 		int colStart = (column / 3) * 3;
 		int rowEnd = rowStart + 3;
 		int colEnd = colStart + 3;
@@ -204,10 +223,10 @@ public class Sudoku extends Application {
 		update(mirror);
 	}
 
-	public int[][] readJSON() {
+	public int[][] readJSON(String boardJSON) {
 		int[][] board = new int[9][9];
-		try (BufferedReader br = new BufferedReader(new FileReader("board1.json"))) {
-			StringBuffer sb = new StringBuffer();
+		try (BufferedReader br = new BufferedReader(new FileReader(boardJSON))) {		
+			StringBuffer sb = new StringBuffer();					//medsendt filnavn, board1 eller board2
 			String line;
 			while ((line = br.readLine()) != null) {
 				sb.append(line);
