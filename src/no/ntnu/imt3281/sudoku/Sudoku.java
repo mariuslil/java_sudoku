@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javafx.application.Application;
@@ -30,7 +30,7 @@ public class Sudoku extends Application {
 	private String styleRed = "-fx-control-inner-background: rgba(255, 0, 0, 0.8)";
 	private String styleWhite = "-fx-control-inner-background: rgba(255, 255, 255, 1)";
 
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		launch(args);
 	}
 
@@ -69,8 +69,12 @@ public class Sudoku extends Application {
 						if (newValue.matches("0")) {
 							textFields[row][col].clear();
 						}
-						if (!checkValid(row, col, textFields, newValue)) {
-							textFields[row][col].setStyle(styleRed);
+						try {
+							if (!checkValid(row, col, newValue)) {
+								textFields[row][col].setStyle(styleRed);
+							}
+						} catch (BadNumberException e) {
+							e.printStackTrace();
 						}
 						if (newValue.matches("")) {
 							textFields[row][col].setStyle(styleWhite);
@@ -86,6 +90,13 @@ public class Sudoku extends Application {
 		grid.setGridLinesVisible(true);
 	}
 
+	/**
+	 * Updates the active board with new values. Starts with clearing the board
+	 * before inserting new values. Calls the lock() function to insert and lock the
+	 * new value to the board.
+	 * 
+	 * @param newBoard must be a valid sudoku board and replaces the current board.
+	 */
 	public void update(int[][] newBoard) {
 		clear();
 		for (int i = 0; i < 9; i++) {
@@ -97,65 +108,63 @@ public class Sudoku extends Application {
 		}
 	}
 
+	/**
+	 * Locks a field with it's new value
+	 * 
+	 * @param board is the current or relevant board.
+	 * @param row   defines on witch row to lock.
+	 * @param col   defines on witch row to lock.
+	 */
 	public void lock(int[][] board, int row, int col) {
 		textFields[row][col].setText(board[row][col] + "");
 		textFields[row][col].setEditable(false);
 		textFields[row][col].setStyle(styleGray);
 	}
 
-	public void newGameEasy() {
-		int[][] board = readJSON("board1.json");
-		update(board);
-	}
-	
-	public void newGameMedium() {
-		int[][] board = readJSON("board2.json");
+	public void newGame() {
+		int[][] board = readJSON();
 		update(board);
 	}
 
-	public boolean checkValid(int row, int column, TextField[][] board, String number) {
-		/*Integer[] arr = new Integer[9];
-		for (int r = 0; r < 9; r++) {
-			if (r != column) {
-				arr[r] = Integer.parseInt(board[row][r].getText());		
+	public boolean checkValid(int row, int col, String num) throws BadNumberException {
+		return (checkRow(row, col, num) && checkColumn(row, col, num) && checkBox(row, col, num));
+	}
+
+	public boolean checkRow(int row, int col, String num) throws BadNumberException {
+		Iterator<String> itr = getIteratorRow(row);
+		int i = 0;
+		while (itr.hasNext()) {
+			if (i != col && itr.next().equals(num)) {
+				throw new BadNumberException(row, i);
 			}
+			i++;
 		}
-		Iterator<Integer> iterator = Arrays.stream(arr).iterator();
-		if (iterator.hasNext()) {
-			if (iterator.equals(Integer.parseInt(number))) {
-				return false;
+		return true;
+	}
+
+	public boolean checkColumn(int row, int col, String num) throws BadNumberException {
+		Iterator<String> itr = getIteratorRow(col);
+		int i = 0;
+		while (itr.hasNext()) {
+			if (i != row && itr.next().equals(num)) {
+				throw new BadNumberException(col, i);
 			}
-		}*/
-		for (int r = 0; r < 9; r++) {
-			if (r != column) {
-				if (board[row][r].getText().equals(number)) {
-					return false;
+			i++;
+		}
+		return true;
+	}
+
+	public boolean checkBox(int row, int col, String num) throws BadNumberException {
+		int rowStart = (row / 3) * 3; // Finner starten av ruten
+		int colStart = (col / 3) * 3;
+		Iterator<String[][]> itr = getIteratorBox(rowStart, colStart);
+		for (int i = rowStart; i < rowStart + 3; i++) {
+			for (int j = colStart; j < colStart + 3; j++) {
+				if (i != row && j != col && itr.next().equals(num)) {
+					throw new BadNumberException(i, j);
 				}
 			}
 		}
-
-		for (int c = 0; c < 9; c++) {
-			if (c != row) {
-				if (board[c][column].getText().equals(number)) {
-					return false;
-				}
-			}
-		}
-
-		int rowStart = (row / 3) * 3;						//Finner starten av ruten
-		int colStart = (column / 3) * 3;
-		int rowEnd = rowStart + 3;
-		int colEnd = colStart + 3;
-		for (int r = rowStart; r < rowEnd; r++) {
-			for (int c = colStart; c < colEnd; c++) {
-				if (r != row && c != column) {
-					if (board[r][c].getText().equals(number)) {
-						return false;
-					}
-				}
-			}
-		}
-
 		return true;
 	}
 
@@ -223,10 +232,25 @@ public class Sudoku extends Application {
 		update(mirror);
 	}
 
-	public int[][] readJSON(String boardJSON) {
+	public void replaceNums() {
+		int[][] newBoard = new int[NUMB_ROWS][NUMB_COLS];
+		for (int i = 0; i < NUMB_ROWS; i++) {
+			for (int j = 0; j < NUMB_COLS; j++) {
+				if (!textFields[i][j].getText().isEmpty() && textFields[i][j].getStyle().equals(styleGray)) {
+					newBoard[i][j] = Integer.parseInt(textFields[i][j].getText()) + 1;
+					if (newBoard[i][j] > 9) {
+						newBoard[i][j] = 1;
+					}
+				}
+			}
+		}
+		update(newBoard);
+	}
+
+	public int[][] readJSON() {
 		int[][] board = new int[9][9];
-		try (BufferedReader br = new BufferedReader(new FileReader(boardJSON))) {		
-			StringBuffer sb = new StringBuffer();					//medsendt filnavn, board1 eller board2
+		try (BufferedReader br = new BufferedReader(new FileReader("board1.json"))) {
+			StringBuffer sb = new StringBuffer(); // medsendt filnavn
 			String line;
 			while ((line = br.readLine()) != null) {
 				sb.append(line);
@@ -247,10 +271,8 @@ public class Sudoku extends Application {
 			}
 
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return board;
@@ -264,6 +286,36 @@ public class Sudoku extends Application {
 				textFields[i][j].setStyle(styleWhite);
 			}
 		}
+	}
+
+	public int returnNumber(int r, int c) {
+		return Integer.parseInt(textFields[r][c].getText());
+	}
+
+	public Iterator<String> getIteratorRow(int r) {
+		ArrayList<String> arr = new ArrayList<String>();
+		for (int i = 0; i < 9; i++) {
+			arr.add(textFields[r][i].getText());
+		}
+		return arr.iterator();
+	}
+
+	public Iterator<String> getIteratorCol(int c) {
+		ArrayList<String> arr = new ArrayList<String>();
+		for (int i = 0; i < 9; i++) {
+			arr.add(textFields[i][c].getText());
+		}
+		return arr.iterator();
+	}
+
+	public Iterator<String[][]> getIteratorBox(int r, int c) {
+		ArrayList<String[][]> arr = new ArrayList<String[][]>();
+		for (int i = r; i < r + 3; i++) {
+			for (int j = c; j < c + 3; j++) {
+				arr.addAll(textFields[i][j].getText());
+			}
+		}
+		return arr.iterator();
 	}
 
 }

@@ -15,10 +15,7 @@ public class sudokuController {
 	private BorderPane borderPane;
 
 	@FXML
-	private Button NewGameEasy;
-	
-	@FXML
-	private Button NewGameMedium;
+	private Button NewGame;
 
 	@FXML
 	private ToolBar ToolBar;
@@ -36,6 +33,9 @@ public class sudokuController {
 	private Button flipp_db;
 
 	@FXML
+	private Button replace;
+
+	@FXML
 	private Button clear;
 
 	public sudokuController() {
@@ -46,13 +46,8 @@ public class sudokuController {
 	}
 
 	@FXML
-	void newGameEasy(ActionEvent event) {
-		sudoku.newGameEasy();					
-	}
-	
-	@FXML
-	void newGameMedium(ActionEvent event) {
-		sudoku.newGameMedium();					
+	void newGame(ActionEvent event) {
+		sudoku.newGame();
 	}
 
 	@FXML
@@ -78,5 +73,10 @@ public class sudokuController {
 	@FXML
 	void flippV(ActionEvent event) {
 		sudoku.flippV();
+	}
+
+	@FXML
+	void replaceNums(ActionEvent event) {
+		sudoku.replaceNums();
 	}
 }
