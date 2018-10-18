@@ -1,9 +1,10 @@
 package no.ntnu.imt3281.sudoku;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -69,15 +70,14 @@ public class Sudoku extends Application {
 						if (newValue.matches("0")) {
 							textFields[row][col].clear();
 						}
-						try {
-							if (!checkValid(row, col, newValue)) {
-								textFields[row][col].setStyle(styleRed);
-							}
-						} catch (BadNumberException e) {
-							e.printStackTrace();
-						}
 						if (newValue.matches("")) {
 							textFields[row][col].setStyle(styleWhite);
+							return;
+						}
+						try {
+							checkValid(row, col, newValue);
+						} catch (BadNumberException e) {
+							textFields[row][col].setStyle(styleRed);
 						}
 						if (checkFinished()) {
 							finished();
@@ -127,15 +127,24 @@ public class Sudoku extends Application {
 	}
 
 	public boolean checkValid(int row, int col, String num) throws BadNumberException {
-		return (checkRow(row, col, num) && checkColumn(row, col, num) && checkBox(row, col, num));
+		if (checkRow(row, col, num)) {
+			if (checkColumn(row, col, num)) {
+				if (checkBox(row, col, num)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public boolean checkRow(int row, int col, String num) throws BadNumberException {
 		Iterator<String> itr = getIteratorRow(row);
 		int i = 0;
 		while (itr.hasNext()) {
-			if (i != col && itr.next().equals(num)) {
-				throw new BadNumberException(row, i);
+			if (itr.next().equals(num)) {
+				if (i != col) {
+					throw new BadNumberException(row, col, num);
+				}
 			}
 			i++;
 		}
@@ -143,11 +152,13 @@ public class Sudoku extends Application {
 	}
 
 	public boolean checkColumn(int row, int col, String num) throws BadNumberException {
-		Iterator<String> itr = getIteratorRow(col);
+		Iterator<String> itr = getIteratorCol(col);
 		int i = 0;
 		while (itr.hasNext()) {
-			if (i != row && itr.next().equals(num)) {
-				throw new BadNumberException(col, i);
+			if (itr.next().equals(num)) {
+				if (i != row) {
+					throw new BadNumberException(row, col, num);
+				}
 			}
 			i++;
 		}
@@ -155,13 +166,15 @@ public class Sudoku extends Application {
 	}
 
 	public boolean checkBox(int row, int col, String num) throws BadNumberException {
-		int rowStart = (row / 3) * 3; // Finner starten av ruten
+		int rowStart = (row / 3) * 3;
 		int colStart = (col / 3) * 3;
-		Iterator<String[][]> itr = getIteratorBox(rowStart, colStart);
+		Iterator<String> itr = getIteratorBox(rowStart, colStart);
 		for (int i = rowStart; i < rowStart + 3; i++) {
 			for (int j = colStart; j < colStart + 3; j++) {
-				if (i != row && j != col && itr.next().equals(num)) {
-					throw new BadNumberException(i, j);
+				if (itr.next().equals(num)) {
+					if (i != row && j != col) {
+						throw new BadNumberException(row, col, num);
+					}
 				}
 			}
 		}
@@ -249,8 +262,10 @@ public class Sudoku extends Application {
 
 	public int[][] readJSON() {
 		int[][] board = new int[9][9];
-		try (BufferedReader br = new BufferedReader(new FileReader("board1.json"))) {
-			StringBuffer sb = new StringBuffer(); // medsendt filnavn
+		// new FileReader("board1.json"))
+		try (BufferedReader br = new BufferedReader(
+				new InputStreamReader(new FileInputStream("board1.json"), "UTF-8"))) {
+			StringBuffer sb = new StringBuffer();
 			String line;
 			while ((line = br.readLine()) != null) {
 				sb.append(line);
@@ -308,11 +323,11 @@ public class Sudoku extends Application {
 		return arr.iterator();
 	}
 
-	public Iterator<String[][]> getIteratorBox(int r, int c) {
-		ArrayList<String[][]> arr = new ArrayList<String[][]>();
+	public Iterator<String> getIteratorBox(int r, int c) {
+		ArrayList<String> arr = new ArrayList<String>();
 		for (int i = r; i < r + 3; i++) {
 			for (int j = c; j < c + 3; j++) {
-				arr.addAll(textFields[i][j].getText());
+				arr.add(textFields[i][j].getText());
 			}
 		}
 		return arr.iterator();

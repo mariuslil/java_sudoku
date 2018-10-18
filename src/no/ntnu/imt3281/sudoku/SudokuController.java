@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 
-public class sudokuController {
+public class SudokuController {
 
 	private Sudoku sudoku;
 
@@ -38,7 +38,7 @@ public class sudokuController {
 	@FXML
 	private Button clear;
 
-	public sudokuController() {
+	public SudokuController() {
 		sudoku = new Sudoku();
 		Platform.runLater(() -> {
 			sudoku.generate(borderPane);
