@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ResourceBundle;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -37,7 +38,8 @@ public class Sudoku extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("Sudoku.fxml"));
+		ResourceBundle bundle = ResourceBundle.getBundle("no.ntnu.imt3281.sudoku.MessagesBundle");
+		Parent root = FXMLLoader.load(getClass().getResource("Sudoku.fxml"), bundle);
 		Scene scene = new Scene(root);
 		primaryStage.setTitle("Sudoku");
 		primaryStage.setScene(scene);
