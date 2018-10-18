@@ -44,6 +44,10 @@ public class Sudoku extends Application {
 		primaryStage.show();
 	}
 
+	/**
+	 * 
+	 * @param borderPane
+	 */
 	public void generate(BorderPane borderPane) {
 		textFields = new TextField[NUMB_ROWS][NUMB_COLS];
 		GridPane grid = new GridPane();
@@ -126,6 +130,14 @@ public class Sudoku extends Application {
 		update(board);
 	}
 
+	/**
+	 * 
+	 * @param row
+	 * @param col
+	 * @param num
+	 * @return
+	 * @throws BadNumberException
+	 */
 	public boolean checkValid(int row, int col, String num) throws BadNumberException {
 		if (checkRow(row, col, num)) {
 			if (checkColumn(row, col, num)) {
@@ -137,6 +149,14 @@ public class Sudoku extends Application {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param row
+	 * @param col
+	 * @param num
+	 * @return
+	 * @throws BadNumberException
+	 */
 	public boolean checkRow(int row, int col, String num) throws BadNumberException {
 		Iterator<String> itr = getIteratorRow(row);
 		int i = 0;
@@ -151,6 +171,14 @@ public class Sudoku extends Application {
 		return true;
 	}
 
+	/**
+	 * 
+	 * @param row
+	 * @param col
+	 * @param num
+	 * @return
+	 * @throws BadNumberException
+	 */
 	public boolean checkColumn(int row, int col, String num) throws BadNumberException {
 		Iterator<String> itr = getIteratorCol(col);
 		int i = 0;
@@ -165,6 +193,14 @@ public class Sudoku extends Application {
 		return true;
 	}
 
+	/**
+	 * 
+	 * @param row
+	 * @param col
+	 * @param num
+	 * @return
+	 * @throws BadNumberException
+	 */
 	public boolean checkBox(int row, int col, String num) throws BadNumberException {
 		int rowStart = (row / 3) * 3;
 		int colStart = (col / 3) * 3;
@@ -181,6 +217,10 @@ public class Sudoku extends Application {
 		return true;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean checkFinished() {
 		for (int i = 0; i < NUMB_ROWS; i++) {
 			for (int j = 0; j < NUMB_COLS; j++) {
@@ -196,6 +236,9 @@ public class Sudoku extends Application {
 		System.out.println("Hurra! du klarte det!");
 	}
 
+	/**
+	 * 
+	 */
 	public void flippH() {
 		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
 		for (int i = 0; i < NUMB_ROWS; i++) {
@@ -208,6 +251,9 @@ public class Sudoku extends Application {
 		update(mirror);
 	}
 
+	/**
+	 * 
+	 */
 	public void flippV() {
 		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
 		for (int i = 0; i < NUMB_ROWS; i++) {
@@ -220,6 +266,9 @@ public class Sudoku extends Application {
 		update(mirror);
 	}
 
+	/**
+	 * 
+	 */
 	public void flippDB() {
 		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
 		for (int i = 0; i < NUMB_ROWS; i++) {
@@ -232,6 +281,9 @@ public class Sudoku extends Application {
 		update(mirror);
 	}
 
+	/**
+	 * 
+	 */
 	public void flippDR() {
 		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
 		for (int i = 0; i < NUMB_ROWS; i++) {
@@ -245,6 +297,9 @@ public class Sudoku extends Application {
 		update(mirror);
 	}
 
+	/**
+	 * 
+	 */
 	public void replaceNums() {
 		int[][] newBoard = new int[NUMB_ROWS][NUMB_COLS];
 		for (int i = 0; i < NUMB_ROWS; i++) {
@@ -260,6 +315,10 @@ public class Sudoku extends Application {
 		update(newBoard);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public int[][] readJSON() {
 		int[][] board = new int[9][9];
 		try (BufferedReader br = new BufferedReader(
@@ -292,6 +351,9 @@ public class Sudoku extends Application {
 		return board;
 	}
 
+	/**
+	 * 
+	 */
 	public void clear() {
 		for (int i = 0; i < NUMB_ROWS; i++) {
 			for (int j = 0; j < NUMB_COLS; j++) {
@@ -306,6 +368,11 @@ public class Sudoku extends Application {
 		return Integer.parseInt(textFields[r][c].getText());
 	}
 
+	/**
+	 * 
+	 * @param r
+	 * @return
+	 */
 	public Iterator<String> getIteratorRow(int r) {
 		ArrayList<String> arr = new ArrayList<String>();
 		for (int i = 0; i < 9; i++) {
@@ -314,6 +381,11 @@ public class Sudoku extends Application {
 		return arr.iterator();
 	}
 
+	/**
+	 * 
+	 * @param c
+	 * @return
+	 */
 	public Iterator<String> getIteratorCol(int c) {
 		ArrayList<String> arr = new ArrayList<String>();
 		for (int i = 0; i < 9; i++) {
@@ -322,6 +394,12 @@ public class Sudoku extends Application {
 		return arr.iterator();
 	}
 
+	/**
+	 * 
+	 * @param r
+	 * @param c
+	 * @return
+	 */
 	public Iterator<String> getIteratorBox(int r, int c) {
 		ArrayList<String> arr = new ArrayList<String>();
 		for (int i = r; i < r + 3; i++) {
