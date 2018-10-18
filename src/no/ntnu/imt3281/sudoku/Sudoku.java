@@ -262,7 +262,6 @@ public class Sudoku extends Application {
 
 	public int[][] readJSON() {
 		int[][] board = new int[9][9];
-		// new FileReader("board1.json"))
 		try (BufferedReader br = new BufferedReader(
 				new InputStreamReader(new FileInputStream("board1.json"), "UTF-8"))) {
 			StringBuffer sb = new StringBuffer();
