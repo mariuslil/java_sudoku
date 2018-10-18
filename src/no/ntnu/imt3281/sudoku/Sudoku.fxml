@@ -51,7 +51,7 @@
       <Line endX="299.5" layoutX="150.0" layoutY="300.0" startX="-149.5" strokeWidth="3.0" />
       <Line endY="449.5" layoutX="150.0" strokeWidth="3.0" />
       <Line endY="449.5" layoutX="300.0" strokeWidth="3.0" />
-      <TextField fx:id="victory" alignment="CENTER" editable="false" layoutX="65.0" layoutY="200.0" prefHeight="48.0" prefWidth="320.0" text="Gratulerer! Du vant!" visible="false">
+      <TextField fx:id="victory" alignment="CENTER" editable="false" layoutX="65.0" layoutY="200.0" prefHeight="48.0" prefWidth="320.0" text="%gratz" visible="false">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
