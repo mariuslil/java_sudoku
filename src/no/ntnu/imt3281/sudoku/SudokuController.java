@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 
@@ -37,6 +38,9 @@ public class SudokuController {
 
 	@FXML
 	private Button clear;
+
+	@FXML
+	private TextField victory;
 
 	public SudokuController() {
 		sudoku = new Sudoku();
@@ -78,5 +82,10 @@ public class SudokuController {
 	@FXML
 	void replaceNums(ActionEvent event) {
 		sudoku.replaceNums();
+	}
+
+	@FXML
+	void finished() {
+		victory.setVisible(true);
 	}
 }
