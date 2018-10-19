@@ -36,6 +36,9 @@ public class Sudoku extends Application {
 		launch(args);
 	}
 
+	/**
+	 * Starts the UI form the FXML file.
+	 */
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		ResourceBundle bundle = ResourceBundle.getBundle("no.ntnu.imt3281.sudoku.MessagesBundle");
@@ -47,8 +50,11 @@ public class Sudoku extends Application {
 	}
 
 	/**
+	 * Geerates the board and all the fields. Activates listeners on all the fields
+	 * to listen for changes and excecute the appropriate function denpending on the
+	 * change.
 	 * 
-	 * @param borderPane
+	 * @param borderPane is the FX element the board is generated in.
 	 */
 	public void generate(BorderPane borderPane) {
 		textFields = new TextField[NUMB_ROWS][NUMB_COLS];
@@ -115,7 +121,7 @@ public class Sudoku extends Application {
 	}
 
 	/**
-	 * Locks a field with it's new value
+	 * Locks a field with it's new value.
 	 * 
 	 * @param board is the current or relevant board.
 	 * @param row   defines on witch row to lock.
@@ -127,18 +133,24 @@ public class Sudoku extends Application {
 		textFields[row][col].setStyle(styleGray);
 	}
 
+	/**
+	 * Reads a new board from file and places it on the board.
+	 */
 	public void newGame() {
 		int[][] board = readJSON();
 		update(board);
 	}
 
 	/**
+	 * Runs three functions that check if the new input is valid in corelation to
+	 * the row, column and the 3x3 box it's in.
 	 * 
-	 * @param row
-	 * @param col
-	 * @param num
-	 * @return
-	 * @throws BadNumberException
+	 * @param row is the row that the new value is on.
+	 * @param col is the column that the new value is on.
+	 * @param num is the new value that the user inputed.
+	 * @return returns a boolean value of wheter the new value is valid in that
+	 *         field.
+	 * @throws BadNumberException if the number is not valid.
 	 */
 	public boolean checkValid(int row, int col, String num) throws BadNumberException {
 		if (checkRow(row, col, num)) {
@@ -152,12 +164,13 @@ public class Sudoku extends Application {
 	}
 
 	/**
+	 * Checks if the new number is allready in the relevant row.
 	 * 
-	 * @param row
-	 * @param col
-	 * @param num
-	 * @return
-	 * @throws BadNumberException
+	 * @param row the row on witch the new number is.
+	 * @param col the column on witch the new number is.
+	 * @param num the new number.
+	 * @return the boolean value of wheter the new number is valid or not
+	 * @throws BadNumberException if the number is not valid.
 	 */
 	public boolean checkRow(int row, int col, String num) throws BadNumberException {
 		Iterator<String> itr = getIteratorRow(row);
@@ -174,12 +187,13 @@ public class Sudoku extends Application {
 	}
 
 	/**
+	 * Checks if the number is allready in the relevant column.
 	 * 
-	 * @param row
-	 * @param col
-	 * @param num
-	 * @return
-	 * @throws BadNumberException
+	 * @param row the row on witch the new number is.
+	 * @param col the column on witch the new number is.
+	 * @param num the new number.
+	 * @return the boolean value of wheter the new number is valid or not
+	 * @throws BadNumberException if the number is not valid.
 	 */
 	public boolean checkColumn(int row, int col, String num) throws BadNumberException {
 		Iterator<String> itr = getIteratorCol(col);
@@ -196,12 +210,15 @@ public class Sudoku extends Application {
 	}
 
 	/**
+	 * Checks if the number is allready in relevant the 3x3 box. uses the numbers
+	 * row and column position to find the upper left corner of the box to start
+	 * checking from there
 	 * 
-	 * @param row
-	 * @param col
-	 * @param num
-	 * @return
-	 * @throws BadNumberException
+	 * @param row the row on witch the new number is.
+	 * @param col the column on witch the new number is.
+	 * @param num the new number.
+	 * @return the boolean value of wheter the new number is valid or not
+	 * @throws BadNumberException if the number is not valid.
 	 */
 	public boolean checkBox(int row, int col, String num) throws BadNumberException {
 		int rowStart = (row / 3) * 3;
@@ -220,8 +237,10 @@ public class Sudoku extends Application {
 	}
 
 	/**
+	 * Checks if the game is finished by checking all the fields for any sign that
+	 * it's not finished.
 	 * 
-	 * @return
+	 * @return the boolean value of if it is finished or not.
 	 */
 	public boolean checkFinished() {
 		for (int i = 0; i < NUMB_ROWS; i++) {
@@ -234,12 +253,17 @@ public class Sudoku extends Application {
 		return true;
 	}
 
+	/**
+	 * If the game is finished it should display a message to the user, this is not
+	 * finished yet and therfore only displays a println.
+	 */
 	public void finished() {
 		System.out.println("Hurra! du klarte det!");
 	}
 
 	/**
-	 * 
+	 * Flipps the current board horizontaly by replacing all the numbers with the
+	 * ones opposite them. Then sends the new board to be updated.
 	 */
 	public void flippH() {
 		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
@@ -254,7 +278,8 @@ public class Sudoku extends Application {
 	}
 
 	/**
-	 * 
+	 * Flipps the current board verticaly by replacing all the numbers with the ones
+	 * underneath them. Then sends the new board to be updated.
 	 */
 	public void flippV() {
 		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
@@ -269,7 +294,8 @@ public class Sudoku extends Application {
 	}
 
 	/**
-	 * 
+	 * Flipps the board along the blue diagonal. Then sends the new board to be
+	 * updated.
 	 */
 	public void flippDB() {
 		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
@@ -284,7 +310,8 @@ public class Sudoku extends Application {
 	}
 
 	/**
-	 * 
+	 * Flipps the board along the red diagonal. Then sends the new board to be
+	 * updated.
 	 */
 	public void flippDR() {
 		int[][] mirror = new int[NUMB_ROWS][NUMB_COLS];
@@ -300,7 +327,8 @@ public class Sudoku extends Application {
 	}
 
 	/**
-	 * 
+	 * Replaces all the numbers by increasing them by 1. This should have been
+	 * random.
 	 */
 	public void replaceNums() {
 		int[][] newBoard = new int[NUMB_ROWS][NUMB_COLS];
@@ -318,8 +346,10 @@ public class Sudoku extends Application {
 	}
 
 	/**
+	 * Reads a new board from a JSON file. Makes sure that only the numbers are
+	 * being read.
 	 * 
-	 * @return
+	 * @return the board that has been read from the file.
 	 */
 	public int[][] readJSON() {
 		int[][] board = new int[9][9];
@@ -354,7 +384,7 @@ public class Sudoku extends Application {
 	}
 
 	/**
-	 * 
+	 * Clears the board for all numbers.
 	 */
 	public void clear() {
 		for (int i = 0; i < NUMB_ROWS; i++) {
@@ -371,9 +401,10 @@ public class Sudoku extends Application {
 	}
 
 	/**
+	 * Makes an iterator of a row of the board.
 	 * 
-	 * @param r
-	 * @return
+	 * @param r is the row that is to be transformed.
+	 * @return the iterator.
 	 */
 	public Iterator<String> getIteratorRow(int r) {
 		ArrayList<String> arr = new ArrayList<String>();
@@ -384,9 +415,10 @@ public class Sudoku extends Application {
 	}
 
 	/**
+	 * Makes an iterator of a column of the board.
 	 * 
-	 * @param c
-	 * @return
+	 * @param c the column that is to be transformed.
+	 * @return the iterator.
 	 */
 	public Iterator<String> getIteratorCol(int c) {
 		ArrayList<String> arr = new ArrayList<String>();
@@ -397,10 +429,11 @@ public class Sudoku extends Application {
 	}
 
 	/**
+	 * Makes an iterator of a 3x3 box on the board.
 	 * 
-	 * @param r
-	 * @param c
-	 * @return
+	 * @param r is the row position of the upper left corner of the box.
+	 * @param c is the column position of the upper left corner of the box.
+	 * @return the iterator.
 	 */
 	public Iterator<String> getIteratorBox(int r, int c) {
 		ArrayList<String> arr = new ArrayList<String>();
